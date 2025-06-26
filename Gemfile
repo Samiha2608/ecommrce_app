@@ -25,6 +25,10 @@ gem "rolify"
 
 gem "image_processing", "~> 1.2"
 
+# Gemfile
+gem "dotenv-rails", groups: [ :development, :test ]
+
+
 gem "active_storage_validations"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

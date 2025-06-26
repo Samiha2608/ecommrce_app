@@ -1,60 +1,55 @@
-<h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<div class="container row g-3 align-items-center">
+  <h2>Sign up</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :email , class:"form-label"%><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email"  ,class: "form-control"%>
   </div>
 
-  <div>
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name%>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :first_name , class:"form-label"%><br />
+    <%= f.text_field :first_name ,  class: "form-control"%>
   </div>
 
-  <div>
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name%>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :last_name , class:"form-label"%><br />
+    <%= f.text_field :last_name,  class: "form-control"%>
   </div>
 
-  <div>
-    <%= f.label :phone_number%><br />
-    <%= f.telephone_field :phone_number%>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :phone_number , class:"form-label"%><br />
+    <%= f.telephone_field :phone_number,  class: "form-control"%>
   </div>
 
-  <div>
-    <%= f.label :address%><br />
-    <%= f.text_field :address%>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :address , class:"form-label"%><br />
+    <%= f.text_field :address,  class: "form-control"%>
   </div>
 
-  <div>
-    <%= f.label :display_picture%><br />
-    <%= f.file_field :display_picture%>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :avatar , class:"form-label"%><br />
+    <%= f.file_field :avatar,  class: "form-control"%>
   </div>
 
-  <div class="field">
-    <%= f.label :password %>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :password , class:"form-label"%>
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+    <%= f.password_field :password, autocomplete: "new-password" ,  class: "form-control"%>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  <div class="mb-3 field col-sm-3">
+    <%= f.label :password_confirmation , class:"form-label"%><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" ,  class: "form-control"%>
   </div>
-  <%# <div>
-   <%= f.label :role_id, "Select your role:" %>
-   <%# <%= f.select :role_id, Role.all.collect { |r| [r.name, r.id] }, { include_blank: 'Select a role' } %> %>
-
-  <%# </div> %
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-<%= f.submit "Sign up"%>
+<%= f.submit "Sign up" , class: "btn btn-success"%>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<%= render "devise/shared/links", class: "btn btn-success" %>
+</div>

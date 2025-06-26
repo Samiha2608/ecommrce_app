@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: 1
+  discount: 1
+  active: false
+  cateogory: MyText
+
+two:
+  code: 1
+  discount: 1
+  active: false
+  cateogory: MyText
