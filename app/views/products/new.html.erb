@@ -1,0 +1,45 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Create New Product</h2>
+
+  <%= form_with(model: @product, local: true, html: { multipart: true }, data: { turbo: false }) do |f| %>
+
+
+    <div class="mb-3">
+      <%= f.label :product_name, class: "form-label" %>
+      <%= f.text_field :product_name, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :description, class: "form-label" %>
+      <%= f.text_area :description, class: "form-control", rows: 3 %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :price, class: "form-label" %>
+      <%= f.number_field :price, class: "form-control", min: 1, required: true %>
+    </div>
+
+    <%# <div class="mb-3"> %>
+      <%# <%= f.label :serial_number, class: "form-label" %>  
+      <%# <%= f.text_field :serial_number, class: "form-control", maxlength: 6, placeholder: "6-character code" %>  
+    <%# </div>  %>
+
+    <div class="mb-3">
+      <%= f.label :category, class: "form-label" %>
+      <%= f.text_field :category, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :images, "Upload Product Images", class: "form-label" %>
+      <%= f.file_field :images, multiple: true, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :coupon_id, "Select Coupon (optional)", class: "form-label" %>
+      <%= f.collection_select :coupon_id, Coupon.all, :id, :discount, { prompt: "Select one" }, { class: "form-select" } %>
+    </div>
+
+    <%= f.submit "Create Product", class: "btn btn-success" %>
+    <%= link_to "Cancel", products_path, class: "btn btn-secondary ms-2" %>
+  <% end %>
+</div>

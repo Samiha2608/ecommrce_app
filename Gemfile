@@ -23,6 +23,8 @@ gem "mini_magick", ">= 4.9.5"
 
 gem "rolify"
 
+gem "byebug"
+
 gem "image_processing", "~> 1.2"
 
 # Gemfile
@@ -69,3 +71,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "pundit", "~> 2.5"

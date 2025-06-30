@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  has_many :products
+  has_many :comments
+  has_many :carts, dependent: :destroy
+  has_many :orders, dependent: :destroy
   rolify
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -17,7 +21,9 @@ class User < ApplicationRecord
   attr_accessor :first_name, :last_name
 
   before_validation :combine_names, if: :names_provided?
+  before_validation :ensure_phone_no_range
   after_create :assign_default_role
+  before_create :capitalize_name_first_letter
 
 
   def Buyer
@@ -41,5 +47,15 @@ class User < ApplicationRecord
 
   def assign_default_role
     self.add_role(:buyer)
+  end
+
+  def ensure_phone_no_range
+    if phone_no.present? && (phone_no < 10000000000 || phone_no > 99999999999)
+      errors.add(:phone_no, "must be a 11-digit number")
+      throw :abort
+    end
+  end
+  def capitalize_name_first_letter
+    self.full_name= full_name.titleize if full_name.present?
   end
 end

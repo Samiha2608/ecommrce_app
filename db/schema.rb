@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_26_143532) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_30_142712) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_26_143532) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "carts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.integer "user_id", null: false
@@ -58,16 +65,39 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_26_143532) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "order_products", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_products_on_order_id"
+    t.index ["product_id"], name: "index_order_products_on_product_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "cart_id", null: false
+    t.decimal "total_amount"
+    t.boolean "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_orders_on_cart_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "product_name"
     t.text "description"
     t.integer "price"
     t.string "serial_number"
     t.text "category"
-    t.integer "seller_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["seller_id"], name: "index_products_on_seller_id"
+    t.integer "coupon_id"
+    t.index ["coupon_id"], name: "index_products_on_coupon_id"
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -106,7 +136,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_26_143532) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "carts", "users"
   add_foreign_key "comments", "products"
   add_foreign_key "comments", "users"
-  add_foreign_key "products", "sellers"
+  add_foreign_key "order_products", "orders"
+  add_foreign_key "order_products", "products"
+  add_foreign_key "orders", "carts"
+  add_foreign_key "orders", "users"
+  add_foreign_key "products", "coupons"
+  add_foreign_key "products", "users"
 end

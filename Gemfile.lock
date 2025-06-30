@@ -91,6 +91,7 @@ GEM
     brakeman (7.0.2)
       racc
     builder (3.3.0)
+    byebug (12.0.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -208,6 +209,8 @@ GEM
     public_suffix (6.0.2)
     puma (6.6.0)
       nio4r (~> 2.0)
+    pundit (2.5.0)
+      activesupport (>= 3.0.0)
     racc (1.8.1)
     rack (3.1.16)
     rack-session (2.1.1)
@@ -360,6 +363,7 @@ DEPENDENCIES
   active_storage_validations
   bootsnap
   brakeman
+  byebug
   capybara
   debug
   devise (~> 4.9)
@@ -369,6 +373,7 @@ DEPENDENCIES
   jbuilder
   mini_magick (>= 4.9.5)
   puma (>= 5.0)
+  pundit (~> 2.5)
   rails (~> 7.2.0)
   rolify
   rubocop-rails-omakase
