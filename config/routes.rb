@@ -16,7 +16,8 @@ end
 
 
   get "home/index"
-  devise_for :users, controllers: { registrations: "users/registrations" }
+  devise_for :users, controllers: { registrations: "users/registrations", sessions: "users/sessions"
+ }
   root "home#index"
   get "/profile", to: "users#show", as: "user_profile"
 

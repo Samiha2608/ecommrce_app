@@ -20,13 +20,14 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def initialize_cart
     if user_signed_in?
-      @cart = current_user.carts.last || current_user.carts.create
+      @cart = current_user.carts.order(created_at: :desc).first || current_user.carts.create
       session[:cart_id] = @cart.id
     else
       @cart = Cart.find_by(id: session[:cart_id]) || Cart.create
       session[:cart_id] = @cart.id
     end
   end
+
 
 
   private
