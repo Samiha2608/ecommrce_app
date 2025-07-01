@@ -1,18 +1,25 @@
 Rails.application.routes.draw do
-  get "carts/show"
 resources :products do
   resources :comments, only: [ :create, :edit, :update, :destroy ]
   collection do
     get "category/:category", to: "products#category", as: "by_category"
   end
 end
+
+post "products/:id/add_to_cart", to: "carts#add_to_cart", as: "add_to_cart_product"
+get "cart", to: "carts#show", as: :cart
+
+resource :cart, only: [ :show ] do
+  patch "update_quantity/:id", to: "carts#update_quantity", as: :update_quantity
+  delete "remove_item/:id", to: "carts#remove_item", as: "remove_item"
+end
+
+
   get "home/index"
   devise_for :users, controllers: { registrations: "users/registrations" }
   root "home#index"
   get "/profile", to: "users#show", as: "user_profile"
-  get "/cart", to: "cart#show"
-  post "cart/add"
-  post "cart/remove"
+
 
 
 

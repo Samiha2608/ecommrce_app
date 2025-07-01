@@ -11,6 +11,8 @@ class Product < ApplicationRecord
   validates :price, numericality: { only_integer: true }
   validates :serial_number, uniqueness: true, length: { is: 6 }, presence: true
   validates :category, presence: true, length: { in: 1..15 }
+  validates :stock, numericality: { greater_than_or_equal_to: 0 }
+
 
   before_validation :product_first_letter_capital
   before_validation :generate_serial_number, on: :create

@@ -79,7 +79,3 @@ group :development do
   gem "rubocop-rails", require: false
   gem "rubocop-erb", require: false
 end
-
-group :development do
-  gem "bullet"
-end

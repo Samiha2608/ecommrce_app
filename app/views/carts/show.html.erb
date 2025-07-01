@@ -1,2 +1,15 @@
-<h1>Carts#show</h1>
-<p>Find me in app/views/carts/show.html.erb</p>
+<h2>Your Cart</h2>
+
+<% @cart_items.each do |item| %>
+  <li class="list-group-item d-flex justify-content-between align-items-center" id="cart_item_<%= item.id %>">
+    <%= item.product.product_name %> — 
+    <%= number_to_currency(item.product.price) %>
+
+    <%= form_with model: item, url: update_quantity_cart_path(item), method: :patch, data: { turbo_stream: true }, class: "d-inline ms-3", local: false do |f| %>
+      <%= f.number_field :quantity, value: item.quantity, min: 0, max: item.product.stock, class: "form-control d-inline w-auto", style: "width: 60px;" %>
+      <%= f.submit "Update", class: "btn btn-sm btn-outline-primary" %>
+    <% end %>
+
+    <%= button_to "Delete", remove_item_cart_path(item), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger ms-2" %>
+  </li>
+<% end %>
