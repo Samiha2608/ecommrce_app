@@ -73,3 +73,13 @@ group :test do
 end
 
 gem "pundit", "~> 2.5"
+
+group :development do
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-erb", require: false
+end
+
+group :development do
+  gem "bullet"
+end

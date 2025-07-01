@@ -3,19 +3,6 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [ :edit, :update, :destroy ]
   before_action :authorize_comment, only: [ :edit, :update, :destroy ]
 
-  def create
-    if @product.user == current_user
-      render turbo_stream: turbo_stream.replace("comment_errors", partial: "comments/error", locals: { message: "You cannot comment on your own product." })
-      return
-    end
-
-    @comment = @product.comments.build(comment_params.merge(user: current_user))
-    if @comment.save
-      render turbo_stream: turbo_stream.prepend("comments_list", partial: "comments/comment", locals: { comment: @comment })
-    else
-      render turbo_stream: turbo_stream.replace("comment_errors", partial: "comments/error", locals: { message: @comment.errors.full_messages.join(", ") })
-    end
-  end
 
   def edit
   render turbo_stream: turbo_stream.replace(
@@ -24,6 +11,16 @@ class CommentsController < ApplicationController
     locals: { comment: @comment, product: @product }
   )
   end
+  def create
+    @comment = @product.comments.build(comment_params.merge(user: current_user))
+    authorize @comment
+    if @comment.save
+      render turbo_stream: turbo_stream.prepend("comments_list", partial: "comments/comment", locals: { comment: @comment })
+    else
+      render turbo_stream: turbo_stream.replace("comment_errors", partial: "comments/error", locals: { message: @comment.errors.full_messages.join(", ") })
+    end
+  end
+
 
 
 
@@ -52,16 +49,13 @@ class CommentsController < ApplicationController
   def set_product
     @product = Product.find(params[:product_id])
   end
-
   def set_comment
     @comment = @product.comments.find(params[:id])
   end
-
-  def authorize_comment
-    redirect_to product_path(@product), alert: "Not authorized" unless @comment.user == current_user
-  end
-
   def comment_params
     params.require(:comment).permit(:content)
+  end
+  def authorize_comment
+    authorize @comment
   end
 end

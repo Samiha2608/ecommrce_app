@@ -29,19 +29,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-  <li class="nav-item">
-    <%= link_to "Home", home_index_path, class: "nav-link" %>
-  </li>
-  <li class="nav-item">
-    <%= link_to "Products", products_path, class: "nav-link" %>
-  </li>
+        <li class="nav-item">
+          <%= link_to "Home", home_index_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Products", products_path, class: "nav-link" %>
+        </li>
 
-  <% Product.distinct.pluck(:category).compact.sort.each do |category| %>
-  <li class="nav-item">
-    <%= link_to category.titleize, by_category_products_path(category: category), class: "nav-link" %>
-  </li>
-  <% end %>
-
+         <% product_categories.each do |label, value| %>
+          <li class="nav-item">
+            <%= link_to label, by_category_products_path(category: value), class: "nav-link" %>
+          </li>
+        <% end %>
 
   <% if user_signed_in? %>
     <li class="nav-item">
@@ -61,7 +60,7 @@
       <%= link_to "Sign Up", new_user_registration_path, class: "nav-link" %>
     </li>
   <% end %>
-</ul>
+        </ul>
 
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
@@ -70,7 +69,6 @@
     </div>
   </div>
 </nav>
-
   <%= yield %>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>

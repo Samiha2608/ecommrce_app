@@ -2,9 +2,6 @@
   <h2 class="mb-4">Edit Product</h2>
 
   <%= form_with(model: @product, local: true, html: { multipart: true }) do |f| %>
-
-
-
     <div class="mb-3">
       <%= f.label :product_name, class: "form-label" %>
       <%= f.text_field :product_name, class: "form-control", required: true %>

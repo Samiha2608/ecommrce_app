@@ -22,8 +22,8 @@ class User < ApplicationRecord
 
   before_validation :combine_names, if: :names_provided?
   before_validation :ensure_phone_no_range
-  after_create :assign_default_role
   before_create :capitalize_name_first_letter
+  after_create :assign_default_role
 
 
   def Buyer

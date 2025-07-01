@@ -9,11 +9,11 @@ class Product < ApplicationRecord
   validates :product_name, presence: true
   validates :description, length: { in: 5..50 }
   validates :price, numericality: { only_integer: true }
-  # validates :serial_number, uniqueness: true, length: { is: 6 }, presence: true
+  validates :serial_number, uniqueness: true, length: { is: 6 }, presence: true
   validates :category, presence: true, length: { in: 1..15 }
 
   before_validation :product_first_letter_capital
-  before_create :generate_serial_number
+  before_validation :generate_serial_number, on: :create
 
   private
 

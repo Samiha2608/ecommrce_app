@@ -1,12 +1,16 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_product, only: [ :update, :destroy, :show, :edit ]
-  # before_action :authorize_product, only: [ :edit, :update, :destroy ]
+  before_action :authorize_product, only: [ :edit, :update, :destroy ]
 
   def index
-    @products = Product.all
+    @products = Product.includes(:coupon, { images_attachments: :blob }).all
   end
 
+  def show
+    @product = Product.includes(:coupon, { images_attachments: :blob }).find(params[:id])
+    @comments = @product.comments.includes(:user)
+  end
   def new
     if user_signed_in? && current_user.has_role?(:buyer)
       current_user.add_role(:seller)
@@ -16,6 +20,8 @@ class ProductsController < ApplicationController
     @product = Product.new
   end
 
+  def edit
+  end
   def create
     @product= current_user.products.build(product_params)
     if @product.save
@@ -25,14 +31,8 @@ class ProductsController < ApplicationController
     end
   end
 
-  def show
-  end
-  def edit
-    authorize @product
-  end
 
   def update
-    authorize @product
     if @product.update(product_params)
       redirect_to new_product_path, notice: "Product updated successfully."
     else
@@ -41,14 +41,13 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    authorize @product
     @product.destroy
     redirect_to products_path, notice: "Product deleted."
   end
   def category
-  @category = params[:category]
-  @products = Product.where(category: @category)
-  render :index
+    @category = params[:category]
+    @products = Product.where(category: @category).includes(:coupon, { images_attachments: :blob })
+    render :index
   end
 
   private
@@ -57,9 +56,9 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
   end
 
-  # def authorize_product
-  #   authorize @product
-  # end
+  def authorize_product
+    authorize @product
+  end
 
   def product_params
     params.require(:product).permit(:product_name, :description, :price, :coupon_id, :category, images: [])

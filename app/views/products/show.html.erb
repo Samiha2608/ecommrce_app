@@ -8,14 +8,14 @@
               <button type="button"
                       data-bs-target="#productCarousel"
                       data-bs-slide-to="<%= idx %>"
-                      class="<%= 'active' if idx.zero? %>"
-                      aria-current="<%= 'true' if idx.zero? %>"
+                      class="<%= "active" if idx.zero? %>"
+                      aria-current="<%= "true" if idx.zero? %>"
                       aria-label="Slide <%= idx + 1 %>"></button>
             <% end %>
           </div>
           <div class="carousel-inner">
             <% @product.images.each_with_index do |image, idx| %>
-              <div class="carousel-item <%= 'active' if idx.zero? %>">
+              <div class="carousel-item <%= "active" if idx.zero? %>">
                 <%= image_tag image, class: "d-block w-100 carousel-img", alt: "Product Image #{idx + 1}" %>
               </div>
             <% end %>
