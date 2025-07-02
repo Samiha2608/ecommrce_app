@@ -30,6 +30,8 @@ gem "image_processing", "~> 1.2"
 # Gemfile
 gem "dotenv-rails", groups: [ :development, :test ]
 
+gem "administrate"
+
 
 gem "active_storage_validations"
 # Use Redis adapter to run Action Cable in production
@@ -73,6 +75,9 @@ group :test do
 end
 
 gem "pundit", "~> 2.5"
+
+gem "stripe"
+
 
 group :development do
   gem "rubocop", require: false

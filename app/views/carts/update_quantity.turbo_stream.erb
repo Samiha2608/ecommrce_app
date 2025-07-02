@@ -1,13 +1,12 @@
-<%= turbo_stream.replace "cart_item_#{@order_product.id}" do %>
-  <li class="list-group-item d-flex justify-content-between align-items-center" id="cart_item_<%= @order_product.id %>">
-    <%= @order_product.product.product_name %> —
-    <%= number_to_currency(@order_product.product.price) %>
+<% if @order_product.destroyed? %>
+  <%= turbo_stream.remove "cart_item_#{@order_product.id}" %>
 
-    <%= form_with model: @order_product, url: update_quantity_cart_path(@order_product), method: :patch, data: { turbo_stream: true }, local: false, class: "d-inline ms-3" do |f| %>
-      <%= f.number_field :quantity, min: 0, max: @order_product.product.stock, value: @order_product.quantity, class: "form-control d-inline w-auto", style: "width: 60px;" %>
-      <%= f.submit "Update", class: "btn btn-sm btn-outline-primary" %>
+  <% if current_cart&.order&.order_products&.any? %>
+  <% else %>
+    <%= turbo_stream.replace "cart_status" do %>
+      <div class="alert alert-info text-center">Your cart is currently empty.</div>
     <% end %>
-
-    <%= button_to "Delete", remove_item_cart_path(@order_product), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger ms-2" %>
-  </li>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "cart_item_#{@order_product.id}", partial: "carts/cart_item", locals: { item: @order_product } %>
 <% end %>

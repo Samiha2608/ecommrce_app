@@ -18,9 +18,6 @@
           <h5 class="mb-1"><%= product.product_name %></h5>
           <p class="mb-1 text-muted"><%= truncate(product.description, length: 50) %></p>
 
-          <% if product.coupon&.discount.present? %>
-            <span class="badge bg-danger"><%= product.coupon.discount %>% OFF</span>
-          <% end %>
         </div>
 
         <div class="col-md-3">
@@ -31,28 +28,52 @@
           <% end %>
         </div>
 
-        <div class="col-md-3 text-end">
-          <% original_price = product.price * item.quantity %>
-          <% discounted_price = product.coupon&.discount.present? ? original_price * (1 - product.coupon.discount.to_f / 100) : original_price %>
+          <div class="col-md-3 text-end">
+            <% original_price = product.price * item.quantity %>
 
-          <div>
-            <% if product.coupon&.discount.present? %>
+            <% if session[:applied_coupon_id] && product.coupon_id == session[:applied_coupon_id].to_i %>
+              <% original_price = product.price * item.quantity %>
+              <% discounted_price = original_price * (1 - product.coupon.discount.to_f / 100) %>
+            
               <span class="text-muted text-decoration-line-through"><%= number_to_currency(original_price) %></span><br>
               <strong class="text-success fs-5"><%= number_to_currency(discounted_price) %></strong>
             <% else %>
-              <strong class="fs-5"><%= number_to_currency(original_price) %></strong>
+              <strong class="fs-5"><%= number_to_currency(product.price * item.quantity) %></strong>
             <% end %>
+
+
+            <%= button_to "Remove", remove_item_cart_path(item), method: :delete,
+                data: { turbo_confirm: "Are you sure you want to remove this item?" },
+                class: "btn btn-sm btn-outline-danger mt-2" %>
           </div>
 
-          <%= button_to "Remove", remove_item_cart_path(item), method: :delete,
-              data: { turbo_confirm: "Are you sure you want to remove this item?" },
-              class: "btn btn-sm btn-outline-danger mt-2" %>
-        </div>
       </div>
     </li>
   <% end %>
 </ul>
 
-<% if @cart_items.empty? %>
-  <div class="alert alert-info text-center">Your cart is currently empty.</div>
+<%= form_with url: apply_coupon_cart_path, method: :post, local: true do |form| %>
+  <div class="input-group mt-4 mb-3 w-50 mx-auto">
+    <%= form.text_field :coupon_code, class: "form-control", placeholder: "Enter coupon code" %>
+    <%= form.submit "Apply Coupon", class: "btn btn-outline-success" %>
+  </div>
 <% end %>
+
+<% if flash[:coupon_success] %>
+  <div class="alert alert-success text-center"><%= flash[:coupon_success] %></div>
+<% elsif flash[:coupon_error] %>
+  <div class="alert alert-danger text-center"><%= flash[:coupon_error] %></div>
+<% end %>
+
+
+<% if @cart_items.any? %>
+  <div class="text-center">
+    <%= button_to "Proceed to Checkout", checkouts_path, method: :post, class: "btn btn-success mt-4", data: { turbo: false } %>
+  </div>
+<% end %>
+
+<div id="cart_status">
+  <% if @cart_items.empty? %>
+    <div class="alert alert-info text-center">Your cart is currently empty.</div>
+  <% end %>
+</div>

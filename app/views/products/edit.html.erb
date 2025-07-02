@@ -51,14 +51,6 @@
       <% end %>
     </div>
 
-    <div class="mb-3">
-      <%= f.label :coupon_id, "Select Coupon (optional)", class: "form-label" %>
-      <%= f.collection_select :coupon_id, Coupon.all, :id, :code, { prompt: "Select one" }, class: "form-select #{'is-invalid' if @product.errors[:coupon_id].any?}" %>
-      <% @product.errors.full_messages_for(:coupon_id).each do |message| %>
-        <div class="invalid-feedback d-block"><%= message %></div>
-      <% end %>
-    </div>
-
     <%= f.submit "Update Product", class: "btn btn-success" %>
     <%= link_to "Cancel", products_path, class: "btn btn-secondary ms-2" %>
   <% end %>
