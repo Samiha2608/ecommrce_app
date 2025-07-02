@@ -8,9 +8,9 @@
 
         <div class="col-md-2 text-center">
           <% if product.images.attached? %>
-            <%= image_tag product.images.first.variant(resize_to_limit: [100, 100]), class: "img-thumbnail shadow-sm" %>
+            <%= image_tag(product.images.first, class: "img-thumbnail me-3", size: "100x100") %>
           <% else %>
-            <%= image_tag "placeholder.jpg", size: "100x100", class: "img-thumbnail shadow-sm" %>
+            <%= image_tag("placeholder.png", class: "img-thumbnail me-3", size: "100x100") %>
           <% end %>
         </div>
 

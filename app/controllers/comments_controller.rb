@@ -5,11 +5,7 @@ class CommentsController < ApplicationController
 
 
   def edit
-  render turbo_stream: turbo_stream.replace(
-    "comment_form",
-    partial: "comments/form",
-    locals: { comment: @comment, product: @product }
-  )
+    render turbo_stream: turbo_stream.replace("comment_form", partial: "comments/form", locals: { comment: @comment, product: @product })
   end
   def create
     @comment = @product.comments.build(comment_params.merge(user: current_user))
@@ -17,7 +13,8 @@ class CommentsController < ApplicationController
     if @comment.save
       render turbo_stream: turbo_stream.prepend("comments_list", partial: "comments/comment", locals: { comment: @comment })
     else
-      render turbo_stream: turbo_stream.replace("comment_errors", partial: "comments/error", locals: { message: @comment.errors.full_messages.join(", ") })
+      render turbo_stream: turbo_stream.replace("comment_form", partial: "comments/form", locals: { comment: @comment, product: @product }
+      )
     end
   end
 
@@ -25,14 +22,19 @@ class CommentsController < ApplicationController
 
 
   def update
-  if @comment.update(comment_params)
-    render turbo_stream: [
-      turbo_stream.replace("comment_#{@comment.id}", partial: "comments/comment", locals: { comment: @comment }),
-      turbo_stream.replace("comment_form", partial: "comments/form", locals: { comment: @product.comments.build, product: @product })
-    ]
-  else
-    render turbo_stream: turbo_stream.replace("comment_errors", partial: "comments/error", locals: { message: @comment.errors.full_messages.join(", ") })
-  end
+    if @comment.update(comment_params)
+      render turbo_stream: [
+        turbo_stream.replace("comment_#{@comment.id}", partial: "comments/comment", locals: { comment: @comment }),
+        turbo_stream.replace("comment_form", partial: "comments/form", locals: { comment: @product.comments.build, product: @product })
+      ]
+    else
+      render turbo_stream: turbo_stream.replace(
+      "comment_form",
+      partial: "comments/form",
+      locals: { comment: @comment, product: @product }
+      )
+
+    end
   end
 
 

@@ -50,7 +50,7 @@ class User < ApplicationRecord
   end
 
   def ensure_phone_no_range
-    if phone_no.present? && (phone_no < 10000000000 || phone_no > 99999999999)
+    if phone_number.present? && (phone_no < 10000000000 || phone_no > 99999999999)
       errors.add(:phone_no, "must be a 11-digit number")
       throw :abort
     end
