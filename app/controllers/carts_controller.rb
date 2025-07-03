@@ -115,39 +115,20 @@ class CartsController < ApplicationController
   end
   def update_quantity
     @order_product = OrderProduct.find(params[:id])
-    new_quantity = (params[:order_product]&.[](:quantity) || params[:quantity]).to_i
+    new_quantity = params[:order_product][:quantity].to_i
     product_stock = @order_product.product.stock
 
     if new_quantity <= 0
       @order_product.destroy
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to cart_path, notice: "Item removed from cart." }
-      end
     elsif new_quantity <= product_stock
       @order_product.update(quantity: new_quantity)
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to cart_path, notice: "Quantity updated." }
-      end
-    else
-      respond_to do |format|
-        format.turbo_stream do
-          flash.now[:alert] = "Only #{product_stock} item(s) in stock."
-          render turbo_stream: turbo_stream.replace(
-            "cart_alert",
-            partial: "carts/alert",
-            locals: { message: "Only #{product_stock} item(s) in stock." }
-          )
-        end
-        format.html { redirect_to cart_path, alert: "Only #{product_stock} item(s) in stock." }
-      end
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to cart_path }
     end
   end
-
-
-
-
 
   private
 

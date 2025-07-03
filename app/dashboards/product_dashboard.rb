@@ -10,7 +10,7 @@ class ProductDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     category: Field::Text,
-    comments: Field::HasMany,
+    # comments: Field::HasMany,
     coupon: Field::BelongsTo,
     description: Field::Text,
     order_products: Field::HasMany,
@@ -32,7 +32,6 @@ class ProductDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     category
-    comments
     coupon
   ].freeze
 
@@ -41,7 +40,6 @@ class ProductDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     category
-    comments
     coupon
     description
     order_products
@@ -60,7 +58,6 @@ class ProductDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     category
-    comments
     coupon
     description
     order_products

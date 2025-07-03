@@ -1,0 +1,47 @@
+<li id="cart_item_<%= item.id %>" class="list-group-item py-3">
+  <% product = item.product %>
+  <div class="row align-items-center">
+    <div class="col-md-2 text-center">
+      <% if product.images.attached? %>
+        <%= image_tag(product.images.first, class: "img-thumbnail me-3", size: "100x100") %>
+      <% else %>
+        <%= image_tag("placeholder.png", class: "img-thumbnail me-3", size: "100x100") %>
+      <% end %>
+    </div>
+
+    <div class="col-md-4">
+      <h5 class="mb-1"><%= product.product_name %></h5>
+      <p class="mb-1 text-muted"><%= truncate(product.description, length: 50) %></p>
+    </div>
+
+    <div class="col-md-3">
+      <%= form_with model: item, url: update_quantity_cart_path(item), method: :patch,
+                    data: { turbo_stream: true }, class: "d-flex align-items-center gap-2", local: false do |f| %>
+        <%= f.number_field :quantity,
+              value: item.quantity,
+              min: 0,
+              max: product.stock,
+              required: true,
+              class: "form-control form-control-sm",
+              style: "width: 60px;" %>
+        <%= f.submit "Update", class: "btn btn-outline-primary btn-sm" %>
+      <% end %>
+    </div>
+
+    <div class="col-md-3 text-end">
+      <% original_price = product.price * item.quantity %>
+
+      <% if session[:applied_coupon_id] && product.coupon_id == session[:applied_coupon_id].to_i %>
+        <% discounted_price = original_price * (1 - product.coupon.discount.to_f / 100) %>
+        <span class="text-muted text-decoration-line-through"><%= number_to_currency(original_price) %></span><br>
+        <strong class="text-success fs-5"><%= number_to_currency(discounted_price) %></strong>
+      <% else %>
+        <strong class="fs-5"><%= number_to_currency(original_price) %></strong>
+      <% end %>
+
+      <%= button_to "Remove", remove_item_cart_path(item), method: :delete,
+          data: { turbo_confirm: "Are you sure you want to remove this item?" },
+          class: "btn btn-sm btn-outline-danger mt-2" %>
+    </div>
+  </div>
+</li>

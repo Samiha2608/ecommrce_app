@@ -10,3 +10,4 @@
 <% else %>
   <%= turbo_stream.replace "cart_item_#{@order_product.id}", partial: "carts/cart_item", locals: { item: @order_product } %>
 <% end %>
+

@@ -10,10 +10,7 @@ class UserDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     address: Field::Text,
-    avatar_attachment: Field::HasOne,
-    avatar_blob: Field::HasOne,
     carts: Field::HasMany,
-    comments: Field::HasMany,
     email: Field::String,
     encrypted_password: Field::String,
     full_name: Field::String,
@@ -23,7 +20,6 @@ class UserDashboard < Administrate::BaseDashboard
     remember_created_at: Field::DateTime,
     reset_password_sent_at: Field::DateTime,
     reset_password_token: Field::String,
-    roles: Field::HasMany,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -36,19 +32,14 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     address
-    avatar_attachment
-    avatar_blob
-  ].freeze
+      ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     address
-    avatar_attachment
-    avatar_blob
     carts
-    comments
     email
     encrypted_password
     full_name
@@ -58,7 +49,6 @@ class UserDashboard < Administrate::BaseDashboard
     remember_created_at
     reset_password_sent_at
     reset_password_token
-    roles
     created_at
     updated_at
   ].freeze
@@ -68,10 +58,7 @@ class UserDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     address
-    avatar_attachment
-    avatar_blob
     carts
-    comments
     email
     encrypted_password
     full_name
@@ -81,7 +68,6 @@ class UserDashboard < Administrate::BaseDashboard
     remember_created_at
     reset_password_sent_at
     reset_password_token
-    roles
   ].freeze
 
   # COLLECTION_FILTERS
@@ -102,4 +88,7 @@ class UserDashboard < Administrate::BaseDashboard
   # def display_resource(user)
   #   "User ##{user.id}"
   # end
+  def display_resource(user)
+  "#{user.full_name}"
+  end
 end

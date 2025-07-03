@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  include AlgoliaSearch
   belongs_to :user
   belongs_to :coupon, optional: true
   has_many :comments, dependent: :destroy
@@ -16,6 +17,19 @@ class Product < ApplicationRecord
 
   before_validation :product_first_letter_capital
   before_validation :generate_serial_number, on: :create
+
+  algoliasearch index_name: "Product" do
+    attribute :id, :product_name, :description, :price, :category, :serial_number
+
+    searchableAttributes %w[
+      unordered(product_name)
+      unordered(category)
+      description
+    ]
+
+    customRanking [ "desc(stock)", "asc(price)" ]
+    attributesForFaceting [ :category ]
+  end
 
   private
 

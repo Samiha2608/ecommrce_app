@@ -1,5 +1,11 @@
 module Admin
   class CartsController < Admin::ApplicationController
+    def new
+      redirect_to admin_carts_path, alert: "Creating new cart is not allowed."
+    end
+    def create
+      redirect_to admin_carts_path, alert: "Creating new cart is not allowed."
+    end
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
