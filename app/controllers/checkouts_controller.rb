@@ -17,6 +17,7 @@ class CheckoutsController < ApplicationController
 
     discounted_price = if applied_coupon && product.coupon_id == applied_coupon.id
     (original_price * (1 - applied_coupon.discount.to_f / 100)).round(2)
+    @order.discount =coupon.discount
     else
     original_price
     end

@@ -137,6 +137,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.6.2)
     dotenv (3.1.8)
     dotenv-rails (3.1.8)
       dotenv (= 3.1.8)
@@ -144,6 +145,13 @@ GEM
     drb (2.2.3)
     erb (5.0.1)
     erubi (1.13.1)
+    factory_bot (6.5.4)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.0)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
+    faker (3.5.2)
+      i18n (>= 1.8.11, < 2)
     faraday (2.13.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -286,6 +294,10 @@ GEM
       activesupport (= 7.2.2.1)
       bundler (>= 1.15.0)
       railties (= 7.2.2.1)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.3.0)
       activesupport (>= 5.0.0)
       minitest
@@ -303,7 +315,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.0)
-    rdoc (6.14.1)
+    rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
@@ -314,6 +326,23 @@ GEM
       railties (>= 5.2)
     rexml (3.4.1)
     rolify (6.0.1)
+    rspec-core (3.13.5)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (7.0.2)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
+    rspec-support (3.13.4)
     rubocop (1.77.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -367,6 +396,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     smart_properties (1.17.0)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
@@ -439,6 +470,8 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   dotenv-rails
+  factory_bot_rails
+  faker
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
@@ -446,12 +479,15 @@ DEPENDENCIES
   puma (>= 5.0)
   pundit (~> 2.5)
   rails (~> 7.2.0)
+  rails-controller-testing
   rolify
+  rspec-rails
   rubocop
   rubocop-erb
   rubocop-rails
   rubocop-rails-omakase
   selenium-webdriver
+  shoulda-matchers (~> 6.0)
   sprockets-rails
   sqlite3 (>= 1.4)
   stimulus-rails

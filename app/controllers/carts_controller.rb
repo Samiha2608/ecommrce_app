@@ -136,11 +136,11 @@ class CartsController < ApplicationController
     @product = Product.find(params[:id])
   end
   def calculate_totals_with_coupon(cart, coupon)
-    @original_total = 0
-    @discounted_total = 0
-
     order = cart.order
     return unless order
+
+    @original_total = 0
+    @discounted_total = 0
 
     order.order_products.includes(:product).each do |item|
       price = item.product.price * item.quantity
@@ -149,6 +149,7 @@ class CartsController < ApplicationController
       if item.product.coupon_id == coupon.id
         discounted_price = price * (1 - coupon.discount.to_f / 100)
         @discounted_total += discounted_price
+        order.update(discount: coupon.discount)
       else
         @discounted_total += price
       end
