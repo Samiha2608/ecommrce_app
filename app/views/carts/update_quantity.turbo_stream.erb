@@ -1,0 +1,13 @@
+<% if @order_product.destroyed? %>
+  <%= turbo_stream.remove "cart_item_#{@order_product.id}" %>
+
+  <% if current_cart&.order&.order_products&.any? %>
+  <% else %>
+    <%= turbo_stream.replace "cart_status" do %>
+      <div class="alert alert-info text-center">Your cart is currently empty.</div>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "cart_item_#{@order_product.id}", partial: "carts/cart_item", locals: { item: @order_product } %>
+<% end %>
+

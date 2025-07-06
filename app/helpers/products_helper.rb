@@ -7,16 +7,9 @@ module ProductsHelper
     category.present? ? "#{category.titleize} Products" : "All Products"
   end
 
-  def product_image_with_discount(product)
-  return unless product.images.attached?
+  def product_image(product)
+    return unless product.images.attached?
 
-  image_html = image_tag(product.images.first, class: "card-img-top fixed-image", alt: "Product Image")
-
-  badge_html = if product.coupon&.discount.present?
-    content_tag(:span, "#{product.coupon.discount}% OFF",
-      class: "badge bg-danger position-absolute top-0 end-0 m-2 p-2")
-  end
-
-  content_tag(:div, image_html.concat(badge_html.to_s).html_safe, class: "position-relative")
+    image_html = image_tag(product.images.first, class: "card-img-top fixed-image", alt: "Product Image")
   end
 end

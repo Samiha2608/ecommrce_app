@@ -14,6 +14,9 @@ class ProductPolicy < ApplicationPolicy
   def destroy?
     edit?
   end
+  def add_to_cart?
+    user.nil? || user != record.user
+  end
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!

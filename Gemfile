@@ -30,6 +30,13 @@ gem "image_processing", "~> 1.2"
 # Gemfile
 gem "dotenv-rails", groups: [ :development, :test ]
 
+gem "administrate"
+
+gem "algoliasearch-rails"
+
+
+
+
 
 gem "active_storage_validations"
 # Use Redis adapter to run Action Cable in production
@@ -74,12 +81,25 @@ end
 
 gem "pundit", "~> 2.5"
 
+gem "stripe"
+
+
+
+
+
 group :development do
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-erb", require: false
 end
 
-group :development do
-  gem "bullet"
+group :development, :test do
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
 end
+
+group :test do
+  gem "shoulda-matchers", "~> 6.0"
+end
+gem "rails-controller-testing"

@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  include AlgoliaSearch
   belongs_to :user
   belongs_to :coupon, optional: true
   has_many :comments, dependent: :destroy
@@ -6,14 +7,29 @@ class Product < ApplicationRecord
   has_many :order_products
   has_many :orders, through: :order_products
 
-  validates :product_name, presence: true
-  validates :description, length: { in: 5..50 }
+  validates :product_name, presence: true, format: { with: /[A-Za-z]/ }
+  validates :description, length: { in: 5..50 }, format: { with: /[A-Za-z]/ }
   validates :price, numericality: { only_integer: true }
   validates :serial_number, uniqueness: true, length: { is: 6 }, presence: true
-  validates :category, presence: true, length: { in: 1..15 }
+  validates :category, presence: true, length: { in: 1..15 }, format: { with: /[a-zA-Z]/ }
+  validates :stock, numericality: { greater_than_or_equal_to: 0 }
+  validates :images, presence: true
 
   before_validation :product_first_letter_capital
   before_validation :generate_serial_number, on: :create
+
+  algoliasearch index_name: "Product" do
+    attribute :id, :product_name, :description, :price, :category, :serial_number
+
+    searchableAttributes %w[
+      unordered(product_name)
+      unordered(category)
+      description
+    ]
+
+    customRanking [ "desc(stock)", "asc(price)" ]
+    attributesForFaceting [ :category ]
+  end
 
   private
 

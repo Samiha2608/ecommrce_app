@@ -1,2 +1,34 @@
-<h1>Carts#show</h1>
-<p>Find me in app/views/carts/show.html.erb</p>
+<h2 class="mb-4 text-center">Your Shopping Cart</h2>
+
+<ul class="list-group shadow-sm mb-4">
+  <% @cart_items.each do |item| %>
+    <%= render partial: "carts/cart_item", locals: { item: item } %>
+  <% end %>
+</ul>
+
+
+<%= form_with url: apply_coupon_cart_path, method: :post, local: true do |form| %>
+  <div class="input-group mt-4 mb-3 w-50 mx-auto">
+    <%= form.text_field :coupon_code, class: "form-control", placeholder: "Enter coupon code" %>
+    <%= form.submit "Apply Coupon", class: "btn btn-outline-success" %>
+  </div>
+<% end %>
+
+<% if flash[:coupon_success] %>
+  <div class="alert alert-success text-center"><%= flash[:coupon_success] %></div>
+<% elsif flash[:coupon_error] %>
+  <div class="alert alert-danger text-center"><%= flash[:coupon_error] %></div>
+<% end %>
+
+
+<% if @cart_items.any? %>
+  <div class="text-center">
+    <%= button_to "Proceed to Checkout", checkouts_path, method: :post, class: "btn btn-success mt-4", data: { turbo: false } %>
+  </div>
+<% end %>
+
+<div id="cart_status">
+  <% if @cart_items.empty? %>
+    <div class="alert alert-info text-center">Your cart is currently empty.</div>
+  <% end %>
+</div>

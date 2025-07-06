@@ -1,5 +1,17 @@
 inherit_from: .rubocop_todo.yml
 
+require:
+  - rubocop-rails
+  - rubocop-erb   # if using ERB
+  - rubocop-haml  # if using HAML
+AllCops:
+  TargetRubyVersion: 3.1
+  Exclude:
+    - 'db/schema.rb'
+
+Rails:
+  Enabled: true
+
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 

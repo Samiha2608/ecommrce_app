@@ -11,17 +11,18 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-
+  validates :first_name, presence: true, length: { in: 3..15 }, format: { with: /[A-Za-z]/ }
+  validates :last_name, presence: true, length: { in: 3..15 }, format: { with: /[A-Za-z]/ }
   validates :full_name, presence: true, length: { in: 3..20, message: "must be between 3 and 20 characters long" }
-  validates :phone_number, presence: true, uniqueness: true, format: { with: /\A((\+92|0092|92|0)?3[0-9]{9})\z/, message: "must be a valid phone number" }
-  validates :address, presence: true, uniqueness: true, length: { maximum: 500, message: "must be less than 500 characters long" }
+  validates :phone_number, presence: true, uniqueness: true, format: { with: /\(?[0-9]{3}\)?-[0-9]{3}-[0-9]{4}/, message: "must be a valid phone number" }
+  validates :address, presence: true, uniqueness: true, length: { maximum: 500, message: "must be less than 500 characters long" }, format: { with: /[A-Za-z]/ }
   validates :avatar, content_type: [ :png, :jpg, :jpeg ], size: { less_than: 6.megabytes }, if: -> { avatar.attached? }
 
 
   attr_accessor :first_name, :last_name
 
   before_validation :combine_names, if: :names_provided?
-  before_validation :ensure_phone_no_range
+  # before_validation :ensure_phone_no_range
   before_create :capitalize_name_first_letter
   after_create :assign_default_role
 
@@ -49,12 +50,12 @@ class User < ApplicationRecord
     self.add_role(:buyer)
   end
 
-  def ensure_phone_no_range
-    if phone_no.present? && (phone_no < 10000000000 || phone_no > 99999999999)
-      errors.add(:phone_no, "must be a 11-digit number")
-      throw :abort
-    end
-  end
+  # def ensure_phone_no_range
+  #   if phone_number.present? && (phone_number < 100000000000|| phone_number > 999999999)
+  #     errors.add(:phone_number, "must be a 11-digit number")
+  #     throw :abort
+  #   end
+  # end
   def capitalize_name_first_letter
     self.full_name= full_name.titleize if full_name.present?
   end

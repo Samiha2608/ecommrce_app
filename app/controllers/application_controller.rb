@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
-rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  helper_method :current_cart
   helper ProductsHelper
 
   allow_browser versions: :modern
@@ -19,13 +19,33 @@ rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   end
 
   def initialize_cart
-    @cart ||=Cart.find_by(id: session[:cart_id])
-    if @cart.nil?
-      @cart = Cart.create
+    if user_signed_in?
+      @cart = current_user.carts.order(created_at: :desc).first || current_user.carts.create
       session[:cart_id] = @cart.id
-
+    else
+      @cart = Cart.find_by(id: session[:cart_id]) || Cart.create
+      session[:cart_id] = @cart.id
     end
   end
+
+  def current_cart
+    if user_signed_in?
+      current_user.carts.order(created_at: :desc).first
+    else
+      Cart.find_by(id: session[:cart_id])
+    end
+  end
+
+  def find_or_create_guest_cart
+    cart = Cart.find_by(id: session[:cart_id])
+    return cart if cart.present?
+
+    cart = Cart.create
+    session[:cart_id] = cart.id
+    cart
+  end
+
+
 
   private
 
